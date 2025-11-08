@@ -26,9 +26,14 @@ function UrlShortenerForm() {
   const mutation = useMutation<ShortenUrlResponse, Error, string>({
     mutationFn: async (urlToShorten: string): Promise<ShortenUrlResponse> => {
       const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:8080";
+      const allowedOrigin =
+        import.meta.env.VITE_ALLOWED_ORIGIN || "http://localhost:5173";
       const response = await fetch(`${apiUrl}/api/shorten`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": allowedOrigin,
+        },
         body: JSON.stringify({ url: urlToShorten }),
       });
 
